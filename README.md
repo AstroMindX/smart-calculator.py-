@@ -15,3 +15,8 @@ A Python-based calculator that supports multiple number operations with advanced
 ...bash
 
 python smart_calculator.py
+
+## Versions
+- v1: Basic calculator
+- v2: Added history + input system
+- v3: Duplicate detection + improvements
