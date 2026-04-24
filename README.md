@@ -1,7 +1,17 @@
-Smart Calculator 
+# Smart Calculator 
 
-Featues:
-- Multiple number operations
-- History Tracting
+A Python-based calculator that supports multiple number operations with advanced features.
+
+## Features 
+- Multi-number operations (Add, Subtract, Multiply, Divide)
+- History tracting
 - Duplicate detection
-- Clean menu system
+- Clean input system
+
+## Tech Used
+- Python
+
+## How to run
+...bash
+
+python smart_calculator.py
