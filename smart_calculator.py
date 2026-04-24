@@ -54,22 +54,37 @@ def is_duplicate(operation, numbers):
     return False
 
 history = []
+history_file = "history.txt"
+
+def load_history():
+    try:
+        with open(history_file, "r") as file:
+            for line in file:
+                history.append(line.strip())
+    except FileNotFoundError:
+        pass
 
 def save_history(operation_name, numbers_used, result, equation_str):
+    entry = f"[{operation_name}] {equation_str} = {result}\n"
     if len(history) > 10:
         history.pop(0)
-    history.append({"operation": operation_name, "numbers_used": list(numbers_used), "result": result, "equation": equation_str})
+    history.append(entry)
+
+    with open(history_file, "a") as file:
+        file.write(entry)
 
 def show_history():
     print("History of calculations:")
     if not history:
         print("No calculations in history yet.")
     else:
-        for item in history:
-            print(item["equation"])
+        for item in history[-10:]:
+            print(item)
 
 def clear_history():
     history.clear()
+    with open(history_file, "w") as file:
+        file.write("")
     print("History cleared")
 
 def main():
@@ -159,6 +174,8 @@ def main():
             break
         else:
             print("Invalid choice. Try again")
+            
+load_history()
 
 if __name__ == "__main__":
     main()
