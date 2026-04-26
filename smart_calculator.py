@@ -1,8 +1,11 @@
+import json
+
+
 def get_numbers(old_numbers):
-    choice = input("Do you want to enter new numbers? (yes/no):").lower().strip()
+    choice = input("Do you want to enter new numbers? (yes/no): ").lower().strip()
     if choice == "yes":
         try:
-            numbers = list(map(float, input("Enter numbers separated by space:").split()))
+            numbers = list(map(float, input("Enter numbers separated by space: ").split()))
         except ValueError:
             print("Invalid input.")
             return None
@@ -19,8 +22,10 @@ def get_numbers(old_numbers):
         return None
     return numbers
 
+
 def add(numbers):
     return sum(numbers)
+
 
 def subtract(numbers):
     result = numbers[0]
@@ -28,11 +33,13 @@ def subtract(numbers):
         result -= num
     return result
 
+
 def multiply(numbers):
     result = 1
     for num in numbers:
         result *= num
     return result
+
 
 def divide(numbers):
     result = numbers[0]
@@ -42,36 +49,58 @@ def divide(numbers):
         result /= num
     return result
 
+
 def percentage(numbers):
     if numbers[1] == 0:
         return None
     return (numbers[0] * numbers[1]) / 100
 
+
 def is_duplicate(operation, numbers):
     for item in history:
-        if item["operation"] == operation and item["numbers_used"] == numbers:
+        if (
+            isinstance(item, dict)
+            and item.get("operation") == operation
+            and item.get("numbers_used") == numbers
+        ):
             return True
     return False
 
+
 history = []
 history_file = "history.txt"
+
 
 def load_history():
     try:
         with open(history_file, "r") as file:
             for line in file:
-                history.append(line.strip())
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    history.append(json.loads(line))
+                except json.JSONDecodeError:
+                    # Keep compatibility with older text-only history format.
+                    history.append({"display": line})
     except FileNotFoundError:
         pass
 
+
 def save_history(operation_name, numbers_used, result, equation_str):
-    entry = f"[{operation_name}] {equation_str} = {result}\n"
-    if len(history) > 10:
+    entry = {
+        "operation": operation_name,
+        "numbers_used": numbers_used,
+        "result": result,
+        "equation": equation_str,
+    }
+    if len(history) >= 10:
         history.pop(0)
     history.append(entry)
 
     with open(history_file, "a") as file:
-        file.write(entry)
+        file.write(json.dumps(entry) + "\n")
+
 
 def show_history():
     print("History of calculations:")
@@ -79,13 +108,18 @@ def show_history():
         print("No calculations in history yet.")
     else:
         for item in history[-10:]:
-            print(item)
+            if isinstance(item, dict) and "display" in item:
+                print(item["display"])
+            else:
+                print(f"[{item['operation']}] {item['equation']} = {item['result']}")
+
 
 def clear_history():
     history.clear()
     with open(history_file, "w") as file:
         file.write("")
     print("History cleared")
+
 
 def main():
     numbers = []
@@ -114,7 +148,7 @@ def main():
             result = add(numbers)
             equation_str = " + ".join(map(str, numbers))
             print("Result:", result)
-            save_history("Add", numbers, result, f"{equation_str} = {result}")
+            save_history("Add", numbers, result, equation_str)
         elif choice == 2:
             numbers = get_numbers(numbers)
             if numbers is None:
@@ -125,7 +159,7 @@ def main():
             result = subtract(numbers)
             equation_str = " - ".join(map(str, numbers))
             print("Result:", result)
-            save_history("Subtract", numbers, result, f"{equation_str} = {result}")
+            save_history("Subtract", numbers, result, equation_str)
         elif choice == 3:
             numbers = get_numbers(numbers)
             if numbers is None:
@@ -136,7 +170,7 @@ def main():
             result = multiply(numbers)
             equation_str = " * ".join(map(str, numbers))
             print("Result:", result)
-            save_history("Multiply", numbers, result, f"{equation_str} = {result}")
+            save_history("Multiply", numbers, result, equation_str)
         elif choice == 4:
             numbers = get_numbers(numbers)
             if numbers is None:
@@ -150,7 +184,7 @@ def main():
                 continue
             equation_str = " / ".join(map(str, numbers))
             print("Result:", result)
-            save_history("Divide", numbers, result, f"{equation_str} = {result}")
+            save_history("Divide", numbers, result, equation_str)
         elif choice == 5:
             numbers = get_numbers(numbers)
             if numbers is None:
@@ -164,7 +198,7 @@ def main():
                 continue
             equation_str = f"{numbers[1]}% of {numbers[0]}"
             print("Result:", result)
-            save_history("Percentage", numbers, result, f"{equation_str} = {result}")
+            save_history("Percentage", numbers, result, equation_str)
         elif choice == 6:
             show_history()
         elif choice == 7:
@@ -174,7 +208,8 @@ def main():
             break
         else:
             print("Invalid choice. Try again")
-            
+
+
 load_history()
 
 if __name__ == "__main__":
