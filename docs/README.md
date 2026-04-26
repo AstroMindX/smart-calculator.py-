@@ -53,6 +53,7 @@ Open `ui/index.html` directly in your browser, or serve the repo folder with a s
 1. Push this repository to GitHub.
 2. Ensure your default branch is named `main` (or adjust the workflow trigger).
 3. In GitHub, open **Settings → Pages** and set **Source** to **GitHub Actions**.
+4. Push to `main` (or `work` in this repo) or run the workflow manually via **Actions** to deploy.
 4. Push to `main` (or run the workflow manually via **Actions**) to deploy.
 
 The workflow publishes the contents of `ui/` as the Pages site.
