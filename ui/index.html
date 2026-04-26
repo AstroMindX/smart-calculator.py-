@@ -1,28 +1,50 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Smart Calculator</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Calculator</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Smart Calculator</h1>
+  <main class="app-card">
+    <header>
+      <h1>Smart Calculator</h1>
+      <p class="subtitle">Quick math with history and reusable inputs</p>
+      <span class="version">UI v2.0.0</span>
+    </header>
 
-        <input type="number" id="num1" placeholder="Enter first number">
-        <input type="number" id="num2" placeholder="Enter second number">
+    <section class="form-grid">
+      <label for="num1">Number A</label>
+      <input type="number" id="num1" placeholder="e.g. 42" step="any">
 
-        <select id="operation">
-            <option value="add">+</option>
-            <option value="sub">-</option>
-            <option value="mul">*</option>
-            <option value="div">/</option>
-        </select>
+      <label for="num2">Number B</label>
+      <input type="number" id="num2" placeholder="e.g. 5" step="any">
 
-        <button onclick="calculate()">Calculate</button>
+      <label for="operation">Operation</label>
+      <select id="operation">
+        <option value="add">Add (+)</option>
+        <option value="sub">Subtract (-)</option>
+        <option value="mul">Multiply (×)</option>
+        <option value="div">Divide (÷)</option>
+        <option value="percent">Percentage (% of)</option>
+      </select>
+    </section>
 
-        <h2 id="result"></h2>
-    </div>
+    <section class="actions">
+      <button id="calculateBtn">Calculate</button>
+      <button id="swapBtn" class="secondary">Swap Inputs</button>
+      <button id="clearHistoryBtn" class="danger">Clear History</button>
+    </section>
 
-    <script src="script.js"></script>
+    <p id="result" aria-live="polite">Result: —</p>
+
+    <section>
+      <h2>Recent Calculations</h2>
+      <ul id="historyList" class="history-list"></ul>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
 </body>
-  </html>
+</html>

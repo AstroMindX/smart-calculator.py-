@@ -1,23 +1,55 @@
-# Smart Calculator 
+# Smart Calculator
 
-A Python-based calculator that supports multiple number operations with advanced features.
+Smart Calculator includes:
+- a Python CLI calculator for multi-number workflows,
+- a browser UI for quick two-number operations,
+- persisted calculation history in both experiences.
 
-## Features 
-- Multi-number operations (Add, Subtract, Multiply, Divide)
-- History tracting
-- Duplicate detection
-- Clean input system
-- Persistent history (saved to file)
+## Project structure
 
-## Tech Used
-- Python
+- `src/smart_calculator.py` — CLI app with history, duplicate detection, and version banner.
+- `ui/index.html` — calculator UI layout.
+- `ui/style.css` — UI styling.
+- `ui/script.js` — browser logic and local history.
+- `docs/CHANGELOG.md` — release notes.
+- `VERSION` — canonical app version for this repository.
 
-## How to run
-...bash
+## Features
 
-python smart_calculator.py
+### CLI features
+- Add, subtract, multiply, divide, and percentage for multiple numbers.
+- Reuse previous number list (`yes/no` prompt flow).
+- Duplicate-operation detection.
+- Persistent history saved to `history.txt`.
+- Up to 10 recent history records in memory.
 
-## Versions
-- v1: Basic calculator
-- v2: Added history + input system
-- v3: Duplicate detection + improvements
+### UI features
+- Add, subtract, multiply, divide, and percentage (% of) operations.
+- Validation for missing numbers.
+- Division-by-zero guard.
+- Swap input button.
+- History list stored in browser localStorage.
+- Clear history button.
+
+## Run instructions
+
+### 1) CLI
+
+From the repository root:
+
+```bash
+python src/smart_calculator.py
+```
+
+### 2) Browser UI
+
+Open `ui/index.html` directly in your browser, or serve the repo folder with a simple static server.
+
+## Versioning
+
+This project now uses Semantic Versioning (`MAJOR.MINOR.PATCH`).
+
+- `VERSION` contains the current project version.
+- `docs/CHANGELOG.md` tracks user-facing changes.
+
+Current version: **v4.0.0**.
