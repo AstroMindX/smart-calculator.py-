@@ -1,4 +1,12 @@
 import json
+from pathlib import Path
+
+APP_VERSION = "4.0.0"
+MAX_HISTORY = 10
+HISTORY_FILE = Path(__file__).resolve().parent.parent / "history.txt"
+
+
+history = []
 
 
 def get_numbers(old_numbers):
@@ -67,13 +75,9 @@ def is_duplicate(operation, numbers):
     return False
 
 
-history = []
-history_file = "history.txt"
-
-
 def load_history():
     try:
-        with open(history_file, "r") as file:
+        with open(HISTORY_FILE, "r", encoding="utf-8") as file:
             for line in file:
                 line = line.strip()
                 if not line:
@@ -81,7 +85,6 @@ def load_history():
                 try:
                     history.append(json.loads(line))
                 except json.JSONDecodeError:
-                    # Keep compatibility with older text-only history format.
                     history.append({"display": line})
     except FileNotFoundError:
         pass
@@ -94,11 +97,11 @@ def save_history(operation_name, numbers_used, result, equation_str):
         "result": result,
         "equation": equation_str,
     }
-    if len(history) >= 10:
+    if len(history) >= MAX_HISTORY:
         history.pop(0)
     history.append(entry)
 
-    with open(history_file, "a") as file:
+    with open(HISTORY_FILE, "a", encoding="utf-8") as file:
         file.write(json.dumps(entry) + "\n")
 
 
@@ -107,7 +110,7 @@ def show_history():
     if not history:
         print("No calculations in history yet.")
     else:
-        for item in history[-10:]:
+        for item in history[-MAX_HISTORY:]:
             if isinstance(item, dict) and "display" in item:
                 print(item["display"])
             else:
@@ -116,23 +119,27 @@ def show_history():
 
 def clear_history():
     history.clear()
-    with open(history_file, "w") as file:
+    with open(HISTORY_FILE, "w", encoding="utf-8") as file:
         file.write("")
     print("History cleared")
+
+
+def print_menu():
+    print(f"--- Smart Calculator v{APP_VERSION} ---")
+    print("1. Add")
+    print("2. Subtract")
+    print("3. Multiply")
+    print("4. Divide")
+    print("5. Percentage")
+    print("6. Show History")
+    print("7. Clear History")
+    print("8. Exit")
 
 
 def main():
     numbers = []
     while True:
-        print("--- Smart Calculator ---")
-        print("1. Add")
-        print("2. Subtract")
-        print("3. Multiply")
-        print("4. Divide")
-        print("5. Percentage")
-        print("6. Show History")
-        print("7. Clear History")
-        print("8. Exit")
+        print_menu()
         try:
             choice = int(input("Enter your choice:"))
         except ValueError:
